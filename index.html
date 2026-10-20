@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>우리 학교 공간 아이디어 공모전</title>
+<meta name="robots" content="noindex">
+<base target="_top">
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+  /* 색과 글꼴은 여기만 고칩니다. 조감도의 수채화 색(종이·잎·나무)에서 가져왔습니다. */
+  :root {
+    --paper: #f6f1e6;
+    --card: #fffdf8;
+    --ink: #2c3329;
+    --muted: #6b7065;
+    --line: #e4dccb;
+    --leaf: #4f7f45;
+    --leaf-soft: #e5eedc;
+    --wood: #b98552;
+    --zone-a: #e0802f;
+    --zone-a-soft: #fbeadb;
+    --zone-b: #3f9550;
+    --zone-b-soft: #e1f0e2;
+    --zone-c: #3f6fbf;
+    --zone-c-soft: #e0e9f8;
+    --danger: #c0442f;
+    --radius: 18px;
+    --head: 'Do Hyeon', sans-serif;
+    --body: 'Gowun Dodum', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); }
+  body { line-height: 1.65; font-size: 16px; -webkit-text-size-adjust: 100%; }
+  img { max-width: 100%; display: block; }
+  h1, h2, h3, .btn, .nav a, .chip, .tag { font-family: var(--head); font-weight: 400; }
+  h2 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.5px; }
+  h3 { font-size: 21px; margin: 0 0 4px; }
+  p { margin: 0 0 10px; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+  section { padding: 44px 0 8px; scroll-margin-top: 56px; }
+  .lead { color: var(--muted); margin-bottom: 18px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+
+  /* 위에 붙는 메뉴 */
+  .nav { position: sticky; top: 0; z-index: 20; background: rgba(246, 241, 230, .94);
+    backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .nav .wrap { display: flex; gap: 4px; overflow-x: auto; padding-top: 8px; padding-bottom: 8px; scrollbar-width: none; }
+  .nav .wrap::-webkit-scrollbar { display: none; }
+  .nav a { flex: none; padding: 6px 14px; border-radius: 99px; color: var(--ink); text-decoration: none; font-size: 17px; cursor: pointer; }
+  .nav a.go { background: var(--leaf); color: #fff; margin-left: auto; }
+
+  /* 첫 화면 */
+  .hero { padding: 26px 0 0; }
+  .kicker { display: inline-block; font-family: var(--head); color: var(--leaf); background: var(--leaf-soft);
+    padding: 4px 12px; border-radius: 99px; font-size: 15px; margin-bottom: 12px; }
+  .hero h1 { font-size: clamp(30px, 7vw, 48px); line-height: 1.2; margin: 0 0 12px; letter-spacing: -1px; }
+  .hero h1 em { font-style: normal; color: var(--leaf); }
+  .hero-img { border-radius: var(--radius); overflow: hidden; margin: 20px 0 14px; border: 1px solid var(--line); cursor: zoom-in; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+  .fact { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+  .fact b { display: block; font-family: var(--head); font-weight: 400; color: var(--muted); font-size: 15px; }
+  .fact span { font-size: 17px; }
+  .cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 14px;
+    padding: 12px 20px; font-size: 18px; cursor: pointer; background: var(--leaf); color: #fff; text-decoration: none; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+  .btn.small { padding: 7px 12px; font-size: 15px; border-radius: 10px; }
+  .btn:disabled { opacity: .5; cursor: default; }
+
+  /* 공간 소개 */
+  .story { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  .story .shot { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); cursor: zoom-in; }
+  .story figcaption { font-size: 14px; color: var(--muted); padding: 8px 4px 0; }
+  .floor-tabs { display: flex; gap: 6px; margin: 22px 0 10px; }
+  .floor-tabs button { font-family: var(--head); font-size: 17px; border: 1.5px solid var(--ink); background: transparent;
+    color: var(--ink); border-radius: 99px; padding: 5px 16px; cursor: pointer; }
+  .floor-tabs button.on { background: var(--ink); color: var(--paper); }
+  .plan { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: #fff; cursor: zoom-in; }
+  .plan-note { font-size: 14px; color: var(--muted); margin-top: 8px; }
+
+  .zones { display: grid; gap: 14px; margin-top: 22px; }
+  .zone { border-radius: var(--radius); padding: 20px; border: 1px solid var(--line); background: var(--card); border-top: 6px solid; }
+  .zone[data-z="A"] { border-top-color: var(--zone-a); }
+  .zone[data-z="B"] { border-top-color: var(--zone-b); }
+  .zone[data-z="C"] { border-top-color: var(--zone-c); }
+  .zone-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .zbadge { flex: none; width: 42px; height: 42px; border-radius: 50%; color: #fff; font-family: var(--head);
+    font-size: 24px; display: grid; place-items: center; }
+  .zbadge.A { background: var(--zone-a); } .zbadge.B { background: var(--zone-b); } .zbadge.C { background: var(--zone-c); }
+  .zone-head small { display: block; color: var(--muted); font-size: 14px; }
+  .zone ul { margin: 8px 0 12px; padding-left: 20px; }
+  .zone li { margin-bottom: 4px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 15px; padding: 3px 11px; border-radius: 99px; }
+  .zone[data-z="A"] .chip { background: var(--zone-a-soft); color: #9a4e12; }
+  .zone[data-z="B"] .chip { background: var(--zone-b-soft); color: #23622f; }
+  .zone[data-z="C"] .chip { background: var(--zone-c-soft); color: #23498a; }
+
+  .can { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .can h3 { display: flex; align-items: center; gap: 8px; }
+  .can ul { margin: 6px 0 0; padding-left: 20px; }
+  .can .yes h3 { color: var(--leaf); }
+  .can .no h3 { color: var(--muted); }
+
+  /* 응모 방법 */
+  .steps { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); counter-reset: s; }
+  .step { position: relative; padding-top: 46px; }
+  .step::before { counter-increment: s; content: counter(s); position: absolute; top: 16px; left: 20px;
+    font-family: var(--head); font-size: 20px; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--wood); color: #fff; display: grid; place-items: center; }
+  .step p { margin: 0; color: var(--muted); font-size: 15px; }
+  .sheets { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .sheet { margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 8px; cursor: zoom-in; }
+  .sheet img { border-radius: 8px; border: 1px solid var(--line); }
+  .sheet.example { border: 2px solid var(--danger); }
+  .sheet figcaption { display: flex; align-items: center; gap: 6px; padding: 8px 2px 2px; font-family: var(--head); font-size: 16px; }
+  .tag.ex { background: var(--danger); }
+  .where { display: flex; align-items: center; gap: 14px; margin: 14px 0 0; padding: 16px 18px; border-radius: var(--radius);
+    background: var(--wood); color: #fff; }
+  .where .pin { flex: none; width: 46px; height: 46px; border-radius: 50%; background: #fff; color: var(--wood);
+    display: grid; place-items: center; font-size: 24px; }
+  .where b { font-family: var(--head); font-weight: 400; font-size: 22px; display: block; line-height: 1.3; }
+  .where span { font-size: 15px; opacity: .95; }
+  .fact.hl { background: #fbf3e7; border-color: var(--wood); }
+  .fact.hl span { font-family: var(--head); color: #8a5a2b; }
+  .free { margin-top: 14px; border-left: 6px solid var(--wood); background: #fbf3e7; }
+  .free h3 { margin-bottom: 6px; }
+  .free ul { margin: 6px 0 0; padding-left: 20px; }
+  @media (min-width: 720px) { .sheets { grid-template-columns: repeat(5, 1fr); } }
+
+  table.score { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 15px; }
+  table.score td { padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.score td:first-child { font-family: var(--head); font-size: 17px; white-space: nowrap; }
+  table.score td:last-child { text-align: right; font-family: var(--head); color: var(--wood); white-space: nowrap; }
+
+  /* 응모 양식 */
+  form .field { margin-bottom: 20px; }
+  form label.q { display: block; font-family: var(--head); font-size: 19px; margin-bottom: 4px; }
+  form .hint { font-size: 14px; color: var(--muted); margin: -2px 0 8px; }
+  .req { color: var(--danger); font-size: 15px; }
+  input[type=text], textarea { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: #fff;
+    border: 1.5px solid var(--line); border-radius: 12px; padding: 11px 13px; }
+  input[type=text]:focus, textarea:focus { outline: none; border-color: var(--leaf); }
+  textarea { min-height: 96px; resize: vertical; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .members { display: grid; gap: 8px; }
+  .mrow { display: grid; grid-template-columns: 56px 1fr 1.3fr; gap: 8px; align-items: center; }
+  .mtag { font-family: var(--head); font-size: 16px; text-align: center; border-radius: 99px; padding: 4px 0; background: var(--leaf-soft); color: var(--leaf); }
+  .mtag.lead { background: var(--leaf); color: #fff; }
+  .who-team { color: var(--muted); font-size: 14px; }
+  .pick { display: grid; gap: 8px; }
+  .pick label { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 2px solid var(--line);
+    border-radius: 14px; cursor: pointer; background: #fff; }
+  .pick input { position: absolute; opacity: 0; pointer-events: none; }
+  .pick label span small { display: block; color: var(--muted); font-size: 14px; }
+  .pick label:has(input:checked) { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink) inset; }
+  .pick label:has(input:focus-visible) { outline: 3px solid var(--leaf); outline-offset: 2px; }
+  .photos { display: flex; flex-wrap: wrap; gap: 10px; }
+  .photo { position: relative; width: 104px; height: 104px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .photo button { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 50%; border: 0;
+    background: rgba(0, 0, 0, .6); color: #fff; font-size: 16px; line-height: 1; cursor: pointer; }
+  .add-photo { width: 104px; height: 104px; border-radius: 12px; border: 2px dashed var(--wood); color: var(--wood);
+    display: grid; place-items: center; text-align: center; font-family: var(--head); font-size: 15px; cursor: pointer; background: #fff; }
+  .add-photo input { display: none; }
+  .agree { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; }
+  .agree input { width: 20px; height: 20px; margin-top: 3px; flex: none; accent-color: var(--leaf); }
+  .ferr { color: var(--danger); font-size: 15px; font-weight: 700; margin: 8px 0 0; }
+  .err { color: var(--danger); font-size: 15px; min-height: 22px; margin: 8px 0; }
+  .done { text-align: center; padding: 34px 20px; }
+  .done .big { font-size: 54px; line-height: 1; margin-bottom: 8px; }
+  .done .no { font-family: var(--head); font-size: 26px; color: var(--leaf); }
+  .closed { text-align: center; padding: 30px 20px; color: var(--muted); }
+
+  footer { padding: 40px 0 50px; color: var(--muted); font-size: 14px; text-align: center; }
+  footer button { background: none; border: 0; color: var(--muted); text-decoration: underline; font: inherit; cursor: pointer; }
+
+  /* 크게 보기 */
+  .lightbox { position: fixed; inset: 0; z-index: 50; background: rgba(20, 22, 18, .92); display: none;
+    flex-direction: column; overflow: auto; }
+  .lightbox.on { display: flex; }
+  .lightbox .bar { display: flex; justify-content: space-between; align-items: center; color: #fff; padding: 10px 16px; gap: 10px; }
+  .lightbox .bar span { font-size: 14px; opacity: .8; }
+  .lightbox img { max-width: none; width: 100%; margin: auto; background: #fff; }
+  @media (min-width: 900px) { .lightbox img { width: auto; max-width: 96vw; max-height: 88vh; } }
+  .lightbox .close { background: #fff; color: var(--ink); }
+
+  /* 선생님 화면 */
+  .panel { position: fixed; inset: 0; z-index: 40; background: var(--paper); display: none; overflow: auto; }
+  .panel.on { display: block; }
+  .panel-top { position: sticky; top: 0; background: var(--ink); color: var(--paper); z-index: 2; }
+  .panel-top .wrap { display: flex; align-items: center; gap: 8px; padding-top: 10px; padding-bottom: 10px; flex-wrap: wrap; }
+  .panel-top h3 { margin: 0 auto 0 0; }
+  .panel-top button { font-family: var(--head); font-size: 16px; border: 0; border-radius: 99px; padding: 5px 14px;
+    background: transparent; color: var(--paper); cursor: pointer; }
+  .panel-top button.on { background: var(--paper); color: var(--ink); }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px 0; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px; text-align: center; }
+  .stat b { display: block; font-family: var(--head); font-size: 26px; font-weight: 400; }
+  .stat small { color: var(--muted); }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .filters button { font-family: var(--head); font-size: 15px; border: 1.5px solid var(--ink); background: transparent;
+    border-radius: 99px; padding: 3px 12px; cursor: pointer; color: var(--ink); }
+  .filters button.on { background: var(--ink); color: var(--paper); }
+  .entry { margin-bottom: 12px; }
+  .entry-head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+  .tag { font-size: 14px; padding: 2px 10px; border-radius: 99px; color: #fff; }
+  .tag.A { background: var(--zone-a); } .tag.B { background: var(--zone-b); } .tag.C { background: var(--zone-c); }
+  .entry-head .who { color: var(--muted); font-size: 14px; margin-left: auto; }
+  .entry dl { margin: 0; font-size: 15px; }
+  .entry dt { font-family: var(--head); color: var(--muted); margin-top: 6px; }
+  .entry dd { margin: 0; white-space: pre-wrap; }
+  .entry .shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-top: 10px; }
+  .entry .shots img { border-radius: 10px; cursor: zoom-in; border: 1px solid var(--line); }
+  .set .field { margin-bottom: 14px; }
+  .set label { display: block; font-family: var(--head); font-size: 17px; margin-bottom: 4px; }
+  .toggle { display: flex; align-items: center; gap: 10px; font-family: var(--head); font-size: 18px; }
+  .toggle input { width: 22px; height: 22px; accent-color: var(--leaf); }
+  textarea.list { min-height: 260px; font-size: 14px; font-family: ui-monospace, monospace; }
+  .muted { color: var(--muted); font-size: 14px; }
+  .modal { position: fixed; inset: 0; z-index: 60; background: rgba(20, 22, 18, .5); display: none; align-items: center; justify-content: center; padding: 16px; }
+  .modal.on { display: flex; }
+  .modal .card { width: 100%; max-width: 360px; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: var(--paper);
+    padding: 10px 18px; border-radius: 99px; z-index: 70; font-size: 15px; display: none; }
+  .toast.on { display: block; }
+
+  @media (min-width: 720px) {
+    .story { grid-template-columns: 1.4fr 1fr; align-items: start; }
+    .zones { grid-template-columns: repeat(3, 1fr); }
+    .pick { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 420px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    h2 { font-size: 25px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="바로가기">
+  <div class="wrap">
+    <a data-go="about">공모 안내</a>
+    <a data-go="space">공간 둘러보기</a>
+    <a data-go="how">응모 방법</a>
+    <a data-go="prize">시상·심사</a>
+    <a data-go="apply" class="go">응모하기</a>
+  </div>
+</nav>
+
+<header class="hero" id="about">
+  <div class="wrap">
+    <span class="kicker">웅천고 미래학교 공간재구조화 · 학생 공간 아이디어 공모전</span>
+    <h1>느티나무를 품은 우리 학교 마당,<br><em>이렇게 쓰고 싶어요!</em></h1>
+    <p class="lead">새로 지어질 우리 학교의 한가운데, 보호수 느티나무 곁 공간을 여러분의 아이디어로 채워 주세요.
+      직접 쓸 사람이 가장 잘 압니다. 여러분이 낸 아이디어는 실제 설계를 다듬는 데 참고 자료로 쓰여요.</p>
+    <div class="hero-img zoomable" data-full="aerial1" data-cap="새로 지어질 우리 학교 조감도">
+      <img src="img/aerial1.jpg" alt="새로 지어질 학교 조감도. 운동장 오른쪽 위로 새 건물과 2층 대청마루, 느티나무가 있는 마당이 보인다.">
+    </div>
+    <div class="facts">
+      <div class="fact"><b>참여 대상</b><span>전교생 · 혼자 또는 3명까지 팀</span></div>
+      <div class="fact"><b>공모 기간</b><span data-cfg="period"></span></div>
+      <div class="fact"><b>참가 선물</b><span data-cfg="gift"></span></div>
+      <div class="fact"><b>입상 시상</b><span data-cfg="award"></span></div>
+      <div class="fact hl"><b>종이 활동지</b><span>본관 2층 교무실에 비치</span></div>
+    </div>
+    <div class="cta">
+      <button class="btn" data-go="apply">응모하러 가기</button>
+      <button class="btn ghost" data-go="space">공간부터 둘러보기</button>
+    </div>
+  </div>
+</header>
+
+<section id="space">
+  <div class="wrap">
+    <h2>공간 둘러보기</h2>
+    <p class="lead">이번 공모전의 무대는 <b>1층 마을도서실, 보호수 마당, 2층 대청마루와 스탠드 계단</b>이에요.
+      세 곳은 서로 위아래, 옆으로 이어져 있어요. 그림을 누르면 크게 볼 수 있어요.</p>
+
+    <div class="story" style="margin-bottom:14px">
+      <figure class="shot zoomable" data-full="site_zone" data-cap="배치도 — 학교 전체에서 공모 영역의 위치" style="margin:0">
+        <img src="img/site_zone.jpg" alt="학교 배치도. 운동장과 농구장 옆, 새 교사동의 남서쪽 모퉁이에 공모 영역이 빨간 테두리로 표시되어 있다.">
+      </figure>
+      <div class="card">
+        <h3>학교 전체에서 어디일까요?</h3>
+        <p>새 교사동의 <b>남서쪽 모퉁이</b>, 운동장·농구장과 맞닿은 곳이에요.
+          학교에 들어서면 가장 먼저 눈에 띄는 자리예요.</p>
+        <p class="muted" style="margin:0">배치도는 위쪽이 북쪽이에요. 위의 긴 건물은 그대로 남는 후관동, 아래는 철거되는 지금의 본관동 자리예요.</p>
+      </div>
+    </div>
+
+    <div class="story">
+      <figure class="shot zoomable" data-full="aerial2" data-cap="조감도 — 2층 대청마루와 스탠드 계단, 느티나무 마당" style="margin:0">
+        <img src="img/aerial2.jpg" alt="조감도 세 장. 2층 대청마루와 운동장 쪽 모습, 스탠드 계단과 느티나무, 위에서 본 학교 전체.">
+      </figure>
+      <div class="card">
+        <h3>한눈에 보기</h3>
+        <p>도서실 <b>지붕 위가 바로 2층 '대청마루'</b>예요. 대청마루에서 큰 <b>스탠드 계단</b>을 따라 내려오면
+          느티나무가 서 있는 <b>보호수 마당</b>이 나오고, 도서실의 둥근 유리벽이 그 마당을 감싸고 있어요.</p>
+        <p>대청마루는 2학년 교실 앞 <b>'학습마루'</b>와 이어지고, 도서실은 1층 <b>커뮤니티 홀(오픈카페)</b>과 이어져요.</p>
+        <p class="muted" style="margin:0">조감도는 설계 중인 그림이라 실제 모습과 조금 다를 수 있어요.</p>
+      </div>
+    </div>
+
+    <div class="floor-tabs" role="tablist">
+      <button class="on" data-floor="1" role="tab" aria-selected="true">1층 평면도</button>
+      <button data-floor="2" role="tab" aria-selected="false">2층 평면도</button>
+    </div>
+    <div class="plan zoomable" id="planBox" data-full="plan1_zones" data-cap="1층 평면도 (공모 영역 표시)">
+      <img id="planImg" src="img/plan1_zones.jpg" alt="1층 평면도. A 마을도서실, B 보호수 마당, C 스탠드 계단이 색으로 표시되어 있다. 오른쪽에 커뮤니티 홀과 글로벌스페이스가 있다.">
+    </div>
+    <p class="plan-note">색칠된 곳이 이번 공모 영역이에요. 1층·2층을 바꿔 가며 위아래로 어떻게 겹치는지 살펴보세요.<br>
+      도면 출처: 웅천고 기본설계 — 1층은 2026. 8. 26. 확정안, 2층은 2026. 8. 3. 설계안</p>
+
+    <div class="zones">
+      <article class="zone" data-z="A">
+        <div class="zone-head"><span class="zbadge A">A</span><div><h3>마을도서실 (개방형)</h3><small>1층 · 실내 · 224.59㎡ (교실 약 4칸)</small></div></div>
+        <p>대청마루 바로 아래의 열린 도서관이에요. 보호수 쪽은 둥근 유리벽이고, 커뮤니티 홀(오픈카페·역사전시공간)과 이어지며 지역 주민도 함께 써요.</p>
+        <p class="muted">설계 계획: 책장뿐 아니라 멀티미디어, 혼자 공부하는 자리, 토론·회의 공간을 함께 갖춰요.</p>
+        <ul>
+          <li>책을 읽을 때 어떤 자리에 앉고 싶나요?</li>
+          <li>친구와 함께 공부하거나 이야기할 자리는 어떻게?</li>
+          <li>창밖 느티나무를 어떻게 즐길 수 있을까요?</li>
+        </ul>
+        <div class="chips"><span class="chip">창가 좌석</span><span class="chip">계단식 독서석</span><span class="chip">전시 벽</span><span class="chip">모둠 테이블</span><span class="chip">조명</span></div>
+      </article>
+      <article class="zone" data-z="B">
+        <div class="zone-head"><span class="zbadge B">B</span><div><h3>보호수 마당</h3><small>1층 · 야외</small></div></div>
+        <p>오래된 느티나무(보호수)를 가운데 둔 마당이에요. 도서실의 둥근 유리벽, 스탠드 계단, 글로벌스페이스와 맞닿아 있어요.</p>
+        <ul>
+          <li>쉬는 시간·점심시간에 나무 아래서 무엇을 할까요?</li>
+          <li>뜨거운 여름, 비 오는 날에는 어떻게 쓸까요?</li>
+          <li>야외 수업이나 행사를 한다면?</li>
+        </ul>
+        <div class="chips"><span class="chip">나무 둘레 벤치</span><span class="chip">그늘막</span><span class="chip">야외 교실</span><span class="chip">화단</span><span class="chip">바닥 놀이</span></div>
+      </article>
+      <article class="zone" data-z="C">
+        <div class="zone-head"><span class="zbadge C">C</span><div><h3>대청마루 · 스탠드 계단</h3><small>2층 야외 마루 + 큰 계단</small></div></div>
+        <p>도서실 지붕 위에 펼쳐진 넓은 마루와, 보호수 마당으로 내려오는 커다란 계단이에요. 하늘창(천창)이 2개 있고, 2학년 교실 앞 학습마루와 이어져요.</p>
+        <ul>
+          <li>대청마루에서 친구들과 무엇을 하고 싶나요?</li>
+          <li>계단을 객석으로 쓴다면 어떤 공연·행사를?</li>
+          <li>하늘창(천창) 주변은 어떻게 꾸밀까요?</li>
+        </ul>
+        <div class="chips"><span class="chip">계단 좌석·쿠션</span><span class="chip">화분·텃밭</span><span class="chip">작은 무대</span><span class="chip">햇빛 가림</span><span class="chip">안전 난간</span></div>
+      </article>
+    </div>
+
+    <h3 style="margin-top:30px">무엇을 바꿀 수 있나요?</h3>
+    <p class="lead" style="margin-bottom:12px">건물의 뼈대는 이미 정해졌어요. 그 안을 <b>어떻게 채우고 꾸밀지</b>가 여러분 몫이에요.</p>
+    <div class="can">
+      <div class="card yes">
+        <h3>✔ 아이디어를 낼 수 있어요</h3>
+        <ul>
+          <li>가구 — 의자, 테이블, 벤치, 책장</li>
+          <li>색과 재료 — 벽, 바닥, 가구의 색과 느낌</li>
+          <li>조명, 그늘, 식물</li>
+          <li>벽과 바닥 꾸미기, 수납</li>
+          <li>공간을 쓰는 방법과 이름</li>
+        </ul>
+      </div>
+      <div class="card no">
+        <h3>✕ 이미 정해졌어요</h3>
+        <ul>
+          <li>건물 모양과 벽의 위치</li>
+          <li>계단·창문·출입구의 위치</li>
+          <li>보호수 느티나무는 그대로 지켜요</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>응모 방법</h2>
+    <p class="lead">그림 실력은 보지 않아요. 아이디어가 잘 보이면 충분해요.</p>
+    <div class="steps">
+      <div class="card step"><h3>영역 고르기</h3><p>A 도서실, B 보호수 마당, C 대청마루·계단 중 하나를 골라요.</p></div>
+      <div class="card step"><h3>아이디어 표현하기</h3><p><b>본관 2층 교무실</b>에 있는 활동지를 써도 좋고, 모형·콜라주·디지털 그림처럼 나만의 방식으로 표현해도 좋아요.</p></div>
+      <div class="card step"><h3>사진 찍기</h3><p>완성한 작품을 휴대폰으로 밝게 찍어요. <b>사진은 1장 이상 꼭</b> 올려야 하고, 3장까지 올릴 수 있어요.</p></div>
+      <div class="card step"><h3>응모서 내기</h3><p>이 페이지 맨 아래 응모서를 쓰고 사진과 함께 제출해요.</p></div>
+    </div>
+
+    <h3 style="margin-top:30px">그리기 활동지</h3>
+    <div class="where" role="note">
+      <span class="pin" aria-hidden="true">📍</span>
+      <div><b>종이 활동지는 본관 2층 교무실에 있어요</b>
+        <span>교무실에 비치된 활동지를 필요한 만큼 가져가세요. 영역별(A·B·C)로 준비되어 있어요.</span></div>
+    </div>
+    <p class="lead" style="margin-bottom:12px">① 위에서 내려다본 평면도 → ② 눈높이 그림 → ③④⑤ 빈칸 채우기 순서예요.
+      <b>예시</b>를 먼저 보면 훨씬 쉬워요. 그림을 누르면 크게 볼 수 있어요.</p>
+    <div class="sheets">
+      <figure class="sheet zoomable example" data-full="sheet_example" data-cap="활동지 예시 1 (B 보호수 마당)">
+        <img src="img/sheet_example.jpg" alt="채워진 활동지 예시. 보호수 둘레 둥근 벤치, 야외 테이블, 그늘막을 평면도에 그리고, 조감도 위에 계단 방석과 조명을 표시했다. 공간 이름은 느티나무 사랑방.">
+        <figcaption><span class="tag ex">예시 1</span> B 보호수 마당</figcaption>
+      </figure>
+      <figure class="sheet zoomable example" data-full="sheet_example2" data-cap="활동지 예시 2 (A 마을도서실)">
+        <img src="img/sheet_example2.jpg" alt="손그림으로 채운 활동지 예시. 도서실 평면도에 책장, 유리벽 따라 계단 독서석, 모둠 원탁, 빈백 쉼터를 그리고, 눈높이 그림에 통유리 너머 느티나무와 펜던트 조명, 벽면 책장을 그렸다. 공간 이름은 느티나무 책쉼터.">
+        <figcaption><span class="tag ex">예시 2</span> A 마을도서실</figcaption>
+      </figure>
+      <figure class="sheet zoomable" data-full="sheet_A" data-cap="A 마을도서실 활동지">
+        <img src="img/sheet_A.jpg" alt="A 마을도서실 활동지. 도서실 평면도와 실내를 그리는 안내선이 있다.">
+        <figcaption><span class="tag A">A</span> 마을도서실</figcaption>
+      </figure>
+      <figure class="sheet zoomable" data-full="sheet_B" data-cap="B 보호수 마당 활동지">
+        <img src="img/sheet_B.jpg" alt="B 보호수 마당 활동지. 느티나무 주변 평면도와 연하게 인쇄된 조감도가 있다.">
+        <figcaption><span class="tag B">B</span> 보호수 마당</figcaption>
+      </figure>
+      <figure class="sheet zoomable" data-full="sheet_C" data-cap="C 대청마루·스탠드 계단 활동지">
+        <img src="img/sheet_C.jpg" alt="C 대청마루와 스탠드 계단 활동지. 2층 대청마루 평면도와 연하게 인쇄된 조감도가 있다.">
+        <figcaption><span class="tag C">C</span> 대청마루·계단</figcaption>
+      </figure>
+    </div>
+    <p class="muted" style="margin-top:10px">교무실에 가기 어려우면 그림을 크게 연 뒤 길게 눌러 저장해서 인쇄하거나, 태블릿에서 바로 그려도 돼요.</p>
+    <div class="card free">
+      <h3>활동지와 예시는 참고 자료일 뿐이에요</h3>
+      <p style="margin:0">꼭 활동지에 하지 않아도 되고, 예시처럼 하지 않아도 괜찮아요. <b>창의적인 방법, 다른 형식도 모두 환영해요!</b></p>
+      <ul>
+        <li>빈 종이에 자유롭게 그린 그림, 만화·포스터</li>
+        <li>태블릿·컴퓨터로 그린 디지털 그림</li>
+        <li>잡지·사진을 오려 붙인 콜라주</li>
+        <li>종이·상자·블록으로 만든 모형 (여러 방향에서 찍어 올리기)</li>
+      </ul>
+      <p class="muted" style="margin:8px 0 0">어떤 형식이든 <b>사진이나 이미지 파일</b>로 응모서에 올려 주세요. 심사는 형식이 아니라 아이디어를 봐요.</p>
+    </div>
+  </div>
+</section>
+
+<section id="prize">
+  <div class="wrap">
+    <h2>시상과 심사</h2>
+    <div class="can">
+      <div class="card">
+        <h3>🎁 시상</h3>
+        <p><b>참가자 전원</b>: <span data-cfg="gift"></span></p>
+        <p style="margin:0"><b>입상</b>: <span data-cfg="award"></span></p>
+      </div>
+      <div class="card">
+        <h3>📋 심사 기준</h3>
+        <table class="score">
+          <tr><td>필요성</td><td>우리에게 정말 필요한 공간인가요?</td><td>30</td></tr>
+          <tr><td>참신성</td><td>새롭고 재미있는 생각인가요?</td><td>30</td></tr>
+          <tr><td>실현 가능성</td><td>실제로 만들 수 있을까요?</td><td>20</td></tr>
+          <tr><td>표현력</td><td>아이디어가 잘 전해지나요?</td><td>20</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="apply">
+  <div class="wrap">
+    <h2>응모하기</h2>
+    <p class="lead"><b>혼자 또는 3명까지 팀</b>으로 응모할 수 있어요. 한 사람은 <b>한 작품(한 팀)에만</b> 참여할 수 있고, 제출한 뒤에는 다시 낼 수 없어요. 팀은 대표 한 명이 한 번만 내면 돼요.</p>
+
+    <div class="card closed" id="closedBox" hidden>
+      <h3>지금은 응모 기간이 아니에요</h3>
+      <p style="margin:0">공모 기간: <span data-cfg="period"></span></p>
+    </div>
+
+    <form class="card" id="entryForm" novalidate>
+      <div class="field">
+        <span class="q" style="font-family:var(--head);font-size:19px;display:block">참여 학생 <span class="req">*</span> <span class="muted">(혼자 또는 3명까지 팀)</span></span>
+        <p class="hint">첫 줄은 대표 학생이에요. 팀이면 아래 칸에 팀원도 적어 주세요(혼자면 비워 두세요).
+          학번은 4자리(1학년 1반 1번 → 1101)이고, <b>대표 학번이 접수번호</b>가 돼요.</p>
+        <div class="members">
+          <div class="mrow"><span class="mtag lead">대표</span>
+            <input type="text" id="sid" inputmode="numeric" autocomplete="off" placeholder="학번 예: 1101" maxlength="4" aria-label="대표 학번">
+            <input type="text" id="name" autocomplete="off" maxlength="20" placeholder="이름" aria-label="대표 이름"></div>
+          <div class="mrow"><span class="mtag">팀원</span>
+            <input type="text" id="sid2" inputmode="numeric" autocomplete="off" placeholder="학번 (팀일 때)" maxlength="4" aria-label="팀원 1 학번">
+            <input type="text" id="name2" autocomplete="off" maxlength="20" placeholder="이름" aria-label="팀원 1 이름"></div>
+          <div class="mrow"><span class="mtag">팀원</span>
+            <input type="text" id="sid3" inputmode="numeric" autocomplete="off" placeholder="학번 (팀일 때)" maxlength="4" aria-label="팀원 2 학번">
+            <input type="text" id="name3" autocomplete="off" maxlength="20" placeholder="이름" aria-label="팀원 2 이름"></div>
+        </div>
+        <p class="hint" style="margin-top:8px">학번과 이름은 참가 선물과 상을 드리기 위해서만 써요. 팀원도 모두 참가 선물을 받아요.</p>
+      </div>
+
+      <div class="field">
+        <span class="q" style="font-family:var(--head);font-size:19px;display:block;margin-bottom:6px">어느 공간인가요? <span class="req">*</span></span>
+        <div class="pick" role="radiogroup">
+          <label><input type="radio" name="zone" value="A"><span class="zbadge A">A</span><span>마을도서실<small>1층 실내</small></span></label>
+          <label><input type="radio" name="zone" value="B"><span class="zbadge B">B</span><span>보호수 마당<small>1층 야외</small></span></label>
+          <label><input type="radio" name="zone" value="C"><span class="zbadge C">C</span><span>대청마루·스탠드 계단<small>2층 마루와 계단</small></span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q" for="activity">이 공간에서 무엇을 하고 싶나요? <span class="req">*</span></label>
+        <p class="hint">누구와, 언제, 어떻게 쓰고 싶은지 적어 주세요.</p>
+        <textarea id="activity" maxlength="1000" placeholder="예: 점심시간에 친구들과 나무 아래 계단에 앉아 이야기하고, 축제 때는 작은 공연을 보고 싶어요."></textarea>
+      </div>
+      <div class="field">
+        <label class="q" for="furniture">어떤 가구와 시설이 있으면 좋겠나요?</label>
+        <textarea id="furniture" maxlength="1000" placeholder="예: 계단에 놓는 방석, 나무 둘레를 감싸는 둥근 벤치, 접이식 그늘막"></textarea>
+      </div>
+      <div class="field">
+        <label class="q" for="mood">어떤 색과 분위기면 좋겠나요?</label>
+        <textarea id="mood" maxlength="1000" placeholder="예: 나무색과 연두색으로 숲속처럼 편안하게, 밤에는 따뜻한 조명"></textarea>
+      </div>
+      <div class="field">
+        <label class="q" for="title">이 공간에 이름을 지어 주세요</label>
+        <input type="text" id="title" maxlength="40" placeholder="예: 느티나무 사랑방">
+      </div>
+
+      <div class="field">
+        <span class="q" style="font-family:var(--head);font-size:19px;display:block">작품 사진 <span class="req">*</span> <span class="muted">(1장 이상 꼭, 3장까지)</span></span>
+        <p class="hint">활동지, 자유 그림, 모형, 콜라주, 디지털 그림 등 어떤 형식이든 사진이나 이미지로 올려 주세요. 얼굴이나 이름표가 나온 사진은 올리지 마세요.</p>
+        <div class="photos" id="photos">
+          <label class="add-photo" id="addPhoto">＋<br>사진 추가<input type="file" id="photoInput" accept="image/*" multiple></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="agree"><input type="checkbox" id="agree">
+          <span>제출한 작품을 학교에서 전시하고, 공간 설계에 참고 자료로 쓰는 것에 동의해요. <span class="req">*</span></span></label>
+      </div>
+
+      <div class="err" id="formErr" role="alert"></div>
+      <button class="btn" type="submit" id="submitBtn" style="width:100%">응모서 제출하기</button>
+    </form>
+
+    <div class="card done" id="doneBox" hidden>
+      <div class="big">🌳</div>
+      <h3>응모가 접수되었어요!</h3>
+      <p>접수번호 <span class="no" id="doneNo"></span><br><span id="doneZone" class="muted"></span></p>
+      <p class="muted" style="margin:0" id="doneMsg">참가 선물은 담임 선생님을 통해 나눠 드릴 예정이에요.<br>한 사람은 한 작품(한 팀)에만 참여할 수 있어요. 참여해 줘서 고마워요!</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    문의: <span data-cfg="contact"></span><br>
+    <button id="teacherLink">선생님 메뉴</button>
+  </div>
+</footer>
+
+<!-- 크게 보기 -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="그림 크게 보기">
+  <div class="bar"><span id="lbCap"></span><button class="btn small close" id="lbClose">닫기</button></div>
+  <img id="lbImg" alt="">
+</div>
+
+<!-- 선생님 비밀번호 -->
+<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+  <div class="card">
+    <h3 id="loginTitle">선생님 메뉴</h3>
+    <p class="muted" id="loginHint">비밀번호를 입력해 주세요.</p>
+    <input type="password" id="pw" style="width:100%;font:inherit;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px" autocomplete="current-password">
+    <div class="err" id="loginErr"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn small ghost" id="loginCancel">닫기</button>
+      <button class="btn small" id="loginGo">들어가기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 선생님 화면 -->
+<div class="panel" id="panel">
+  <div class="panel-top"><div class="wrap">
+    <h3>공모전 관리</h3>
+    <button data-ptab="entries" class="on">응모작</button>
+    <button data-ptab="people">참가자</button>
+    <button data-ptab="settings">설정</button>
+    <button id="panelClose">✕ 닫기</button>
+  </div></div>
+  <div class="wrap" style="padding-bottom:40px">
+    <div class="stats" id="stats"></div>
+    <div data-pview="entries">
+      <div class="filters" id="filters"></div>
+      <div id="entryList"></div>
+    </div>
+    <div data-pview="people" hidden>
+      <div class="card">
+        <h3>참가자 명단 <span class="muted" id="peopleCount"></span></h3>
+        <p class="muted">대표와 팀원을 모두 학번 순서로 보여 줘요. 참가 선물을 나눠 줄 때 쓰세요. 칸 안을 길게 눌러 전체 선택 후 복사할 수 있어요.</p>
+        <textarea class="list" id="peopleList" readonly></textarea>
+      </div>
+    </div>
+    <div data-pview="settings" hidden>
+      <div class="card set">
+        <div class="field"><label class="toggle"><input type="checkbox" id="cfgOpen"> 응모 받는 중</label>
+          <p class="muted">끄면 학생 화면의 응모서가 닫혀요.</p></div>
+        <div class="field"><label for="cfgPeriod">공모 기간</label><input type="text" id="cfgPeriod" placeholder="예: 11월 2일(월) ~ 11월 13일(금)"></div>
+        <div class="field"><label for="cfgGift">참가 선물</label><input type="text" id="cfgGift"></div>
+        <div class="field"><label for="cfgAward">입상 시상</label><input type="text" id="cfgAward"></div>
+        <div class="field"><label for="cfgContact">문의</label><input type="text" id="cfgContact"></div>
+        <button class="btn" id="cfgSave">저장하기</button>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>원본 보기</h3>
+        <p class="muted">응모 내용은 구글 시트에, 그림 사진은 구글 드라이브 폴더에 모여요.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a class="btn small ghost" id="sheetLink" target="_blank" rel="noopener">구글 시트 열기</a>
+          <a class="btn small ghost" id="folderLink" target="_blank" rel="noopener">사진 폴더 열기</a>
+        </div>
+      </div>
+      <p style="margin-top:16px"><button class="btn small ghost" id="logoutBtn">로그아웃</button></p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+  /* 구글 로그인 상태와 상관없이 서버를 부르는 창구 (쿠키를 보내지 않습니다) */
+  const API_URL = 'https://script.google.com/macros/s/AKfycby6LZsFqHjzqt0Sx6mEAUna0O7CVJ0FTsRKByXUhBacpdJAC4bqse0C-SwKhejKQgOb/exec';
+  window.google = { script: { run: (function () {
+    function runner(ok, fail) {
+      return new Proxy({}, { get(_, k) {
+        if (k === 'withSuccessHandler') return (f) => runner(f, fail);
+        if (k === 'withFailureHandler') return (f) => runner(ok, f);
+        return (...args) => {
+          fetch(API_URL, {
+            method: 'POST', credentials: 'omit', redirect: 'follow',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ fn: k, args: args }),
+          }).then((r) => r.json()).then((res) => {
+            if (res.ok) { if (ok) ok(res.data); } else if (fail) fail(new Error(res.error || '오류가 났어요.'));
+          }).catch(() => { if (fail) fail(new Error('연결이 잠깐 끊겼어요. 잠시 뒤 다시 눌러 주세요.')); });
+        };
+      } });
+    }
+    return runner();
+  })() } };
+</script>
+<script>
+  let CFG = {"open": true, "period": "10월 26일(월) ~ 11월 8일(일)", "gift": "참가자 전원 사은품", "award": "영역별 최우수·우수·장려 — 문화상품권", "contact": "미래정보부"};
+  const IMG = {
+    plan1_zones: document.getElementById('planImg').src,
+    plan2_zones: "img/plan2_zones.jpg",
+    aerial1: document.querySelector('.hero-img img').src,
+    aerial2: document.querySelector('[data-full=aerial2] img').src,
+    site_zone: document.querySelector('[data-full=site_zone] img').src,
+  };
+  const $ = (s, el) => (el || document).querySelector(s);
+  const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+
+  /* 기기 기억 — 막혀 있어도 멈추지 않게 */
+  const mem = {};
+  const store = {
+    get(k) { try { const v = localStorage.getItem(k); return v == null ? mem[k] : v; } catch (e) { return mem[k]; } },
+    set(k, v) { mem[k] = v; try { localStorage.setItem(k, v); } catch (e) {} },
+    del(k) { delete mem[k]; try { localStorage.removeItem(k); } catch (e) {} },
+  };
+
+  function call(fn, ...args) {
+    return new Promise((ok, fail) => {
+      google.script.run.withSuccessHandler(ok).withFailureHandler((e) => fail(e && e.message ? e : new Error(String(e))))[fn](...args);
+    });
+  }
+  function toast(msg) {
+    const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+    clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2400);
+  }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+  /* 설정값 채우기 */
+  function paintConfig() {
+    $$('[data-cfg]').forEach((el) => { el.textContent = CFG[el.dataset.cfg] || ''; });
+    $('#entryForm').hidden = !CFG.open || !$('#doneBox').hidden;
+    $('#closedBox').hidden = !!CFG.open;
+  }
+
+  /* 바로가기 */
+  document.addEventListener('click', (e) => {
+    const go = e.target.closest('[data-go]');
+    if (go) { e.preventDefault(); document.getElementById(go.dataset.go).scrollIntoView({ behavior: 'smooth' }); }
+  });
+
+  /* 층 바꾸기 */
+  $$('.floor-tabs button').forEach((b) => b.addEventListener('click', () => {
+    const f = b.dataset.floor;
+    $$('.floor-tabs button').forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b); });
+    const key = 'plan' + f + '_zones';
+    $('#planImg').src = IMG[key];
+    $('#planImg').alt = f === '1'
+      ? '1층 평면도. A 마을도서실, B 보호수 마당, C 스탠드 계단이 색으로 표시되어 있다. 오른쪽에 커뮤니티 홀과 글로벌스페이스가 있다.'
+      : '2층 평면도. C 대청마루와 스탠드 계단, B 보호수 마당이 색으로 표시되어 있다. 오른쪽에 학습마루와 2학년 교실이 있다.';
+    $('#planBox').dataset.full = key;
+    $('#planBox').dataset.cap = f + '층 평면도 (공모 영역 표시)';
+  }));
+
+  /* 크게 보기 */
+  function openLightbox(key, cap, src) {
+    $('#lbImg').src = src || IMG[key] || $('[data-full="' + key + '"] img').src;
+    $('#lbImg').alt = cap || '';
+    $('#lbCap').textContent = (cap || '') + (key && key.startsWith('sheet') ? ' · 길게 눌러 저장할 수 있어요' : '');
+    $('#lightbox').classList.add('on');
+  }
+  document.addEventListener('click', (e) => {
+    const z = e.target.closest('.zoomable');
+    if (z) openLightbox(z.dataset.full, z.dataset.cap);
+    const o = e.target.closest('[data-open]');
+    if (o) openLightbox(o.dataset.open, o.dataset.cap);
+  });
+  $('#lbClose').addEventListener('click', () => $('#lightbox').classList.remove('on'));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('#lightbox').classList.remove('on'); });
+
+  /* 사진 고르기 — 올리기 전에 크기를 줄입니다 */
+  let photos = [];
+  function compressImage(file) {
+    return new Promise((ok, fail) => {
+      const url = URL.createObjectURL(file);
+      const im = new Image();
+      im.onload = () => {
+        const max = 1600;
+        const k = Math.min(1, max / Math.max(im.width, im.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+        const g = c.getContext('2d');
+        g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height);
+        g.drawImage(im, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        ok(c.toDataURL('image/jpeg', 0.72));
+      };
+      im.onerror = () => { URL.revokeObjectURL(url); fail(new Error('사진을 읽지 못했어요. 다른 사진으로 해 주세요.')); };
+      im.src = url;
+    });
+  }
+  function paintPhotos() {
+    $$('#photos .photo').forEach((p) => p.remove());
+    photos.forEach((src, i) => {
+      const d = document.createElement('div');
+      d.className = 'photo';
+      d.innerHTML = '<img alt="올린 그림 ' + (i + 1) + '"><button type="button" aria-label="사진 빼기">×</button>';
+      d.querySelector('img').src = src;
+      d.querySelector('button').addEventListener('click', () => { photos.splice(i, 1); paintPhotos(); });
+      $('#photos').insertBefore(d, $('#addPhoto'));
+    });
+    $('#addPhoto').hidden = photos.length >= 3;
+  }
+  $('#photoInput').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files || []).slice(0, 3 - photos.length);
+    e.target.value = '';
+    for (const f of files) {
+      try { photos.push(await compressImage(f)); } catch (err) { $('#formErr').textContent = err.message; }
+    }
+    paintPhotos();
+  });
+
+  /* 학번·이름은 그 기기에 기억 */
+  $('#sid').value = store.get('sid') || '';
+  $('#name').value = store.get('name') || '';
+
+  /* 제출
+     확인 창(confirm)·알림 창(alert)은 구글 웹앱 안에서 막혀 조용히 멈추므로 쓰지 않습니다.
+     빠진 칸이 있으면 그 칸 바로 아래에 빨간 안내를 띄우고 그 칸으로 화면을 옮깁니다. */
+  function clearFieldErrors() {
+    $$('.ferr').forEach((el) => el.remove());
+    $('#formErr').textContent = '';
+  }
+  function fieldError(sel, msg) {
+    const target = $(sel);
+    const box = target.closest('.field') || target;
+    const p = document.createElement('p');
+    p.className = 'ferr';
+    p.setAttribute('role', 'alert');
+    p.textContent = '⚠ ' + msg;
+    box.appendChild(p);
+    $('#formErr').textContent = msg;
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (target.focus) target.focus({ preventScroll: true });
+  }
+  $('#entryForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearFieldErrors();
+    const zone = ($('input[name=zone]:checked') || {}).value;
+    const members = [2, 3].map((n) => ({ n, sid: $('#sid' + n).value.trim(), name: $('#name' + n).value.trim() }))
+      .filter((m) => m.sid || m.name);
+    const form = {
+      sid: $('#sid').value.trim(), name: $('#name').value.trim(), zone,
+      members: members.map((m) => ({ sid: m.sid, name: m.name })),
+      activity: $('#activity').value, furniture: $('#furniture').value, mood: $('#mood').value,
+      title: $('#title').value, agree: $('#agree').checked, photos,
+    };
+    if (!/^\d{4}$/.test(form.sid)) return fieldError('#sid', '대표 학번 4자리를 숫자로 적어 주세요. (예: 1학년 1반 1번 → 1101)');
+    if (form.name.length < 2) return fieldError('#name', '대표 이름을 적어 주세요.');
+    for (const m of members) {
+      if (!/^\d{4}$/.test(m.sid)) return fieldError('#sid' + m.n, '팀원 학번 4자리를 숫자로 적어 주세요. (예: 1102)');
+      if (m.name.length < 2) return fieldError('#name' + m.n, '팀원 이름을 적어 주세요.');
+    }
+    const all = [form.sid].concat(members.map((m) => m.sid));
+    if (new Set(all).size !== all.length) return fieldError('#sid', '같은 학번이 두 번 적혀 있어요. 확인해 주세요.');
+    if (!zone) return fieldError('.pick', '어느 공간인지 골라 주세요.');
+    if (form.activity.trim().length < 2) return fieldError('#activity', '이 공간에서 하고 싶은 일을 적어 주세요.');
+    if (!photos.length) return fieldError('#photos', '작품 사진을 1장 이상 꼭 올려 주세요. "사진 추가"를 눌러 찍거나 골라요.');
+    if (!form.agree) return fieldError('#agree', '작품 활용 동의에 체크해 주세요.');
+
+    const btn = $('#submitBtn');
+    btn.disabled = true; btn.textContent = '보내는 중…';
+    try {
+      const r = await call('submitEntry', form);
+      store.set('sid', form.sid); store.set('name', form.name);
+      $('#doneNo').textContent = r.no;
+      $('#doneZone').textContent = r.zone;
+      $('#entryForm').hidden = true;
+      $('#doneBox').hidden = false;
+      $('#apply').scrollIntoView({ behavior: 'smooth' });
+    } catch (x) {
+      $('#formErr').textContent = x.message || '보내지 못했어요. 잠시 뒤 다시 눌러 주세요.';
+      $('#formErr').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } finally {
+      btn.disabled = false; btn.textContent = '응모서 제출하기';
+    }
+  });
+
+  /* ---------- 선생님 ---------- */
+  let token = store.get('tk') || '';
+  let entries = [];
+  let filter = '';
+
+  $('#teacherLink').addEventListener('click', async () => {
+    if (token) {
+      try { await call('checkToken', token); return openPanel(); } catch (e) { token = ''; store.del('tk'); }
+    }
+    const set = await call('isPasswordSet').catch(() => true);
+    $('#loginModal').dataset.first = set ? '' : '1';
+    $('#loginHint').textContent = set ? '비밀번호를 입력해 주세요.' : '처음이네요. 앞으로 쓸 비밀번호를 정해 주세요 (6자 이상).';
+    $('#loginGo').textContent = set ? '들어가기' : '정하고 들어가기';
+    $('#loginErr').textContent = '';
+    $('#pw').value = '';
+    $('#loginModal').classList.add('on');
+    $('#pw').focus();
+  });
+  $('#loginCancel').addEventListener('click', () => $('#loginModal').classList.remove('on'));
+  $('#pw').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#loginGo').click(); });
+  $('#loginGo').addEventListener('click', async () => {
+    const first = $('#loginModal').dataset.first === '1';
+    try {
+      token = await call(first ? 'setInitialPassword' : 'login', $('#pw').value);
+      store.set('tk', token);
+      $('#loginModal').classList.remove('on');
+      openPanel();
+    } catch (e) { $('#loginErr').textContent = e.message; }
+  });
+
+  async function openPanel() {
+    $('#panel').classList.add('on');
+    document.body.style.overflow = 'hidden';
+    $('#entryList').innerHTML = '<p class="muted">불러오는 중…</p>';
+    fillSettings();
+    try {
+      entries = await call('getEntries', token);
+      paintPanel();
+    } catch (e) { $('#entryList').innerHTML = '<p class="err">' + esc(e.message) + '</p>'; }
+    call('getLinks', token).then((l) => { $('#sheetLink').href = l.sheet; $('#folderLink').href = l.folder; }).catch(() => {});
+  }
+  $('#panelClose').addEventListener('click', () => { $('#panel').classList.remove('on'); document.body.style.overflow = ''; });
+  $$('[data-ptab]').forEach((b) => b.addEventListener('click', () => {
+    $$('[data-ptab]').forEach((x) => x.classList.toggle('on', x === b));
+    $$('[data-pview]').forEach((v) => { v.hidden = v.dataset.pview !== b.dataset.ptab; });
+  }));
+
+  /** 대표와 팀원을 모두 한 명씩 펼친 참가자 명단 (참가 선물용). */
+  function people() {
+    const list = [];
+    entries.forEach((e) => {
+      list.push({ sid: e.sid, name: e.name, no: e.no, role: '대표' });
+      (e.team || []).forEach((t) => list.push({ sid: t.sid, name: t.name, no: e.no, role: '팀원' }));
+    });
+    return list.sort((a, b) => a.sid.localeCompare(b.sid, 'ko', { numeric: true }));
+  }
+
+  function paintPanel() {
+    const count = { A: 0, B: 0, C: 0 };
+    entries.forEach((e) => { const z = e.zone.charAt(0); if (z) count[z]++; });
+    const ppl = people();
+    $('#stats').innerHTML =
+      '<div class="stat"><b>' + entries.length + '</b><small>전체 응모</small></div>' +
+      '<div class="stat"><b>' + ppl.length + '</b><small>참가 학생</small></div>' +
+      '<div class="stat"><b>' + count.A + ' · ' + count.B + ' · ' + count.C + '</b><small>A · B · C</small></div>' +
+      '<div class="stat"><b>' + entries.reduce((s, e) => s + e.photos, 0) + '</b><small>그림 사진</small></div>';
+
+    const fl = [['', '전체 ' + entries.length], ['A', 'A 도서실 ' + count.A], ['B', 'B 마당 ' + count.B], ['C', 'C 대청마루 ' + count.C]];
+    $('#filters').innerHTML = fl.map(([z, t]) => '<button data-f="' + z + '" class="' + (z === filter ? 'on' : '') + '">' + t + '</button>').join('');
+    $$('#filters button').forEach((b) => b.addEventListener('click', () => { filter = b.dataset.f; paintPanel(); }));
+
+    const list = entries.filter((e) => !filter || e.zone.charAt(0) === filter);
+    $('#entryList').innerHTML = list.length ? list.map((e) => {
+      const z = e.zone.charAt(0) || '';
+      return '<article class="card entry">' +
+        '<div class="entry-head"><span class="tag ' + z + '">' + esc(e.zone) + '</span>' +
+        '<b>' + esc(e.title || '(이름 없음)') + '</b>' +
+        '<span class="who">' + esc(e.sid) + ' ' + esc(e.name) +
+        ((e.team || []).length ? ' <span class="who-team">외 ' + e.team.map((t) => esc(t.sid) + ' ' + esc(t.name)).join(', ') + '</span>' : '') +
+        ' · ' + esc(e.at) + '</span></div>' +
+        '<dl><dt>하고 싶은 활동</dt><dd>' + esc(e.activity) + '</dd>' +
+        (e.furniture ? '<dt>가구·시설</dt><dd>' + esc(e.furniture) + '</dd>' : '') +
+        (e.mood ? '<dt>색과 분위기</dt><dd>' + esc(e.mood) + '</dd>' : '') + '</dl>' +
+        (e.photos ? '<p style="margin:10px 0 0"><button class="btn small ghost" data-shots="' + esc(e.no) + '">그림 보기 (' + e.photos + ')</button></p><div class="shots"></div>' : '<p class="muted" style="margin:8px 0 0">그림 없음</p>') +
+        '</article>';
+    }).join('') : '<p class="muted">아직 응모작이 없어요.</p>';
+
+    $('#peopleCount').textContent = '(' + ppl.length + '명)';
+    $('#peopleList').value = '학번\t이름\t접수번호\t역할\n' + ppl.map((p) => [p.sid, p.name, p.no, p.role].join('\t')).join('\n');
+  }
+
+  $('#entryList').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-shots]');
+    if (b) {
+      const box = b.parentElement.nextElementSibling;
+      b.disabled = true; b.textContent = '불러오는 중…';
+      try {
+        const srcs = await call('getEntryPhotos', token, b.dataset.shots);
+        box.innerHTML = srcs.map((s, i) => '<img alt="응모 그림 ' + (i + 1) + '">').join('');
+        $$('img', box).forEach((im, i) => { im.src = srcs[i]; });
+        b.remove();
+      } catch (x) { b.disabled = false; b.textContent = '다시 시도'; toast(x.message); }
+      return;
+    }
+    const im = e.target.closest('.shots img');
+    if (im) openLightbox('', '응모 그림', im.src);
+  });
+
+  function fillSettings() {
+    $('#cfgOpen').checked = !!CFG.open;
+    $('#cfgPeriod').value = CFG.period || '';
+    $('#cfgGift').value = CFG.gift || '';
+    $('#cfgAward').value = CFG.award || '';
+    $('#cfgContact').value = CFG.contact || '';
+  }
+  $('#cfgSave').addEventListener('click', async () => {
+    const b = $('#cfgSave');
+    b.disabled = true;
+    try {
+      CFG = await call('saveConfig', token, {
+        open: $('#cfgOpen').checked, period: $('#cfgPeriod').value, gift: $('#cfgGift').value,
+        award: $('#cfgAward').value, contact: $('#cfgContact').value,
+      });
+      paintConfig();
+      toast('저장했어요. 학생 화면에도 바로 보여요.');
+    } catch (e) { toast(e.message); }
+    b.disabled = false;
+  });
+  $('#logoutBtn').addEventListener('click', () => {
+    token = ''; store.del('tk');
+    $('#panel').classList.remove('on'); document.body.style.overflow = '';
+    toast('로그아웃했어요.');
+  });
+
+  paintConfig();
+</script>
+<script>
+  /* 서버의 최신 설정(공모 기간·응모 열림 등)으로 다시 칠합니다. */
+  google.script.run.withSuccessHandler((c) => { if (c) { CFG = c; paintConfig(); } }).getConfig();
+</script>
+</body>
+</html>
